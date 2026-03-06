@@ -7,7 +7,7 @@
     </x-slot>
     <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white shadow rounded-lg p-6">
+            <div class="bg-white shadow p-6">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-semibold mb-4">
                         Attendance Record
