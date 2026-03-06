@@ -18,4 +18,9 @@ class Student extends Model
         'course',
         'rfid_code'
     ];
+
+    public function attendance()
+    {
+        return $this->hasMany(Attendance::class, 'student_id');
+    }
 }

@@ -16,16 +16,8 @@
                         <label class="font-medium text-gray-700">
                             Select Date:
                         </label>
-                        <input
-                            type="date"
-                            name="date"
-                            value="{{ request('date') }}"
-                            class="border rounded-lg px-2 py-1 shadow-sm focus:ring focus:ring-blue-200"
-                        >
-                        <button
-                            type="submit"
-                            class="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700"
-                        >
+                        <input type="date" name="date" value="{{ request('date') }}" class="border rounded-lg px-2 py-1 shadow-sm focus:ring focus:ring-blue-200">
+                        <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700">
                             Filter
                         </button>
                     </form>
@@ -35,17 +27,23 @@
                         <tr>
                             <th class="px-4 py-2 text-left">ID</th>
                             <th class="px-4 py-2 text-left">Name</th>
-                            <th class="px-4 py-2 text-left">Check-in</th>
-                            <th class="px-4 py-2 text-left">Check-out</th>
+                            <th class="px-4 py-2 text-left">Matric No</th>
+                            <th class="px-4 py-2 text-left">Time-in</th>
+                            <th class="px-4 py-2 text-left">Time-out</th>
+                            <th class="px-4 py-2 text-left">Date</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="border-t">
-                            <td class="px-4 py-2 text-left">1</td>
-                            <td class="px-4 py-2 text-left">Ali Ahmad</td>
-                            <td class="px-4 py-2 text-left">08:02</td>
-                            <td class="px-4 py-2 text-left">17:10</td>
+                        @foreach($attendance as $record)
+                        <tr>
+                            <td class="px-4 py-2">{{ $record->attendance_id }}</td>
+                            <td class="px-4 py-2">{{ $record->student->name }}</td>
+                            <td class="px-4 py-2">{{ $record->student->matric_no }}</td>
+                            <td class="px-4 py-2">{{ $record->time_in }}</td>
+                            <td class="px-4 py-2">{{ $record->time_out }}</td>
+                            <td class="px-4 py-2">{{ $record->date }}</td>
                         </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

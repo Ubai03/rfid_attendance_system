@@ -46,7 +46,7 @@
                             <td class="px-4 py-2 text-left">{{ $student->matric_no }}</td>
                             <td class="px-4 py-2 text-left">{{ $student->course }}</td>
                             <td class="px-4 py-2 text-left">{{ $student->rfid_code }}</td>
-                            <td class="p-2">
+                            <td class="py-3">
                                 <button @click="openEdit(@js($student))" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">
                                     Edit
                                 </button>
