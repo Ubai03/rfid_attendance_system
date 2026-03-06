@@ -33,18 +33,18 @@
                 <table class="w-full border border-gray-200">
                     <thead class="bg-gray-100">
                         <tr>
-                            <th class="p-2 text-left">ID</th>
-                            <th class="p-2 text-left">Name</th>
-                            <th class="p-2 text-left">Check-in</th>
-                            <th class="p-2 text-left">Check-out</th>
+                            <th class="px-4 py-2 text-left">ID</th>
+                            <th class="px-4 py-2 text-left">Name</th>
+                            <th class="px-4 py-2 text-left">Check-in</th>
+                            <th class="px-4 py-2 text-left">Check-out</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="border-t">
-                            <td class="p-2">1</td>
-                            <td class="p-2">Ali Ahmad</td>
-                            <td class="p-2">08:02</td>
-                            <td class="p-2">17:10</td>
+                            <td class="px-4 py-2 text-left">1</td>
+                            <td class="px-4 py-2 text-left">Ali Ahmad</td>
+                            <td class="px-4 py-2 text-left">08:02</td>
+                            <td class="px-4 py-2 text-left">17:10</td>
                         </tr>
                     </tbody>
                 </table>
