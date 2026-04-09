@@ -4,17 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Attendance extends Model
+class RFIDLog extends Model
 {
-    protected $table = 'attendance';
-    protected $primaryKey = 'attendance_id';
+    protected $table = 'rfid_scans';
+
+    protected $primaryKey = 'id';
+
+    public $timestamps = false; 
 
     protected $fillable = [
+        'rfid_uid',
         'student_name',
         'matrix_no',
         'course_name',
-        'date',
-        'time_in',
-        'time_out'
+        'scan_time'
     ];
 }

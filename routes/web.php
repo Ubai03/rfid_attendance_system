@@ -2,8 +2,9 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
-use App\Http\Controllers\AttendanceController;
+//use App\Http\Controllers\AttendanceController;
 use App\Models\Attendance;
+use App\Models\RFIDLog;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -24,11 +25,14 @@ Route::delete('/students/{id}', [StudentController::class, 'destroy'])->name('st
 //------------- Attendance page routes ----------------
 Route::get('/dashboard', function () {
     $date = request('date', now()->toDateString());
-    $attendance = Attendance::with('student')
-        ->whereDate('date', $date)->get();
+    $attendance = Attendance::whereDate('date', $date)->get();
     return view('dashboard', compact('attendance'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 //-----------------------------------------------------
+
+Route::get('/test-rfid', function () {
+    return "RFID inserted successfully";
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

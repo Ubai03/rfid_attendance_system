@@ -9,7 +9,7 @@ class AttendanceController extends Controller
 {
     public function index()
     {
-        $attendance = Attendance::with('student')->get();
+        $attendance = Attendance::all();
 
         return view('attendance', compact('attendance'));
     }

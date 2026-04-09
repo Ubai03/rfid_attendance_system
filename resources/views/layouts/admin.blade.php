@@ -40,11 +40,11 @@
                             Dashboard
                         </a>
                     </div>
-                    <div class="items-center">
+                    <!--<div class="items-center">
                         <a href="{{ route('students') }}" class="flex items-center px-4 py-2 text-blue-100 hover:bg-gray-700 transition {{ request()->routeIs('students') ? 'bg-gray-700 text-white' : 'text-blue-100 hover:bg-gray-700' }}">
                             Students
                         </a>
-                    </div>
+                    </div>-->
                 </nav>
             </aside>
 
