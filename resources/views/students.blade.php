@@ -12,7 +12,18 @@
         openEdit(student) {
             this.form = {...student}
             this.editModal = true
-        }}">
+            startRfidPolling()
+        },
+        openAdd() {
+            this.openModal = true
+            startRfidPolling()
+        },
+        closeModals() {
+            this.openModal = false
+            this.editModal = false
+            stopRfidPolling()
+        }
+    }">
         <h1 class="text-2xl font-extrabold px-4 py-2">Students</h1>
         <x-slot name="header">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -23,7 +34,7 @@
             <div class="bg-white shadow p-6">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-lg font-semibold">Student List</h3>
-                    <button @click="openModal = true" class="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700">
+                    <button @click="openAdd()" class="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700">
                         Add Student
                     </button>
                 </div>
@@ -64,13 +75,11 @@
                 </table>
             </div>
         </div>
-        <!-- Modal Background -->
-        <div x-show="openModal" @click.away="openModal = false" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <!-- Modal Box -->
+
+        <!-- Add Student Modal -->
+        <div x-show="openModal" @click.away="closeModals()" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div class="bg-white w-96 p-6 rounded-lg shadow-lg">
-                <h2 class="text-lg font-semibold mb-4">
-                    Add Student
-                </h2>
+                <h2 class="text-lg font-semibold mb-4">Add Student</h2>
                 <form method="POST" action="{{ route('students.store') }}">
                     @csrf
                     <!-- Name -->
@@ -91,12 +100,11 @@
                     <!-- RFID -->
                     <div class="mb-3">
                         <label class="block text-sm">RFID Code</label>
-                        <input type="text" name="rfid_code" class="w-full border rounded-lg px-3 py-2">
+                        <input type="text" name="rfid_code" id="rfid-input-add" placeholder="Tap card or type manually..." class="w-full border rounded-lg px-3 py-2">
                     </div>
                     <!-- Buttons -->
                     <div class="flex justify-end space-x-2 mt-4">
-                        <button
-                            type="button" @click="openModal = false" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-lg">
+                        <button type="button" @click="closeModals()" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-lg">
                             Cancel
                         </button>
                         <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">
@@ -106,6 +114,7 @@
                 </form>
             </div>
         </div>
+
         <!-- Edit Student Modal -->
         <div x-show="editModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div class="bg-white w-96 p-6 rounded-lg shadow-lg">
@@ -113,28 +122,28 @@
                 <form :action="'{{ url('/students') }}/' + form.student_id" method="POST">
                     @csrf
                     @method('PUT')
-                    <!--Name-->
+                    <!-- Name -->
                     <div class="mb-3">
                         <label class="block text-sm">Name</label>
                         <input type="text" name="name" x-model="form.name" class="w-full border rounded-lg px-3 py-2">
                     </div>
-                    <!--Matric No-->
+                    <!-- Matric No -->
                     <div class="mb-3">
                         <label class="block text-sm">Matric No</label>
                         <input type="text" name="matric_no" x-model="form.matric_no" class="w-full border rounded-lg px-3 py-2">
                     </div>
-                    <!--Course-->
+                    <!-- Course -->
                     <div class="mb-3">
                         <label class="block text-sm">Course</label>
                         <input type="text" name="course" x-model="form.course" class="w-full border rounded-lg px-3 py-2">
                     </div>
-                    <!--RFID Code-->
+                    <!-- RFID Code -->
                     <div class="mb-3">
                         <label class="block text-sm">RFID Code</label>
-                        <input type="text" name="rfid_code" x-model="form.rfid_code" class="w-full border rounded-lg px-3 py-2">
+                        <input type="text" name="rfid_code" id="rfid-input-edit" x-model="form.rfid_code" placeholder="Tap card or type manually..." class="w-full border rounded-lg px-3 py-2">
                     </div>
                     <div class="flex justify-end space-x-2 mt-4">
-                        <button type="button" @click="editModal = false" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-lg">
+                        <button type="button" @click="closeModals()" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-lg">
                             Cancel
                         </button>
                         <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">
@@ -145,4 +154,45 @@
             </div>
         </div>
     </div>
+
+    <script>
+        let lastRfidScan = null;
+        let isPolling = false;
+        let pollingInterval = null;
+
+        function startRfidPolling() {
+            isPolling = true;
+            // Reset last scan so tapping immediately fills the field
+            lastRfidScan = null;
+        }
+
+        function stopRfidPolling() {
+            isPolling = false;
+        }
+
+        pollingInterval = setInterval(function () {
+            if (!isPolling) return;
+
+            fetch('{{ url("/api/latest-scan") }}')
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data.rfid_uid !== lastRfidScan) {
+                        lastRfidScan = data.rfid_uid;
+
+                        const addInput = document.getElementById('rfid-input-add');
+                        const editInput = document.getElementById('rfid-input-edit');
+
+                        // Fill whichever modal is open
+                        if (addInput && addInput.closest('[x-show]') && document.querySelector('[x-show="openModal"]')) {
+                            addInput.value = data.rfid_uid;
+                        } else if (editInput) {
+                            editInput.value = data.rfid_uid;
+                            editInput.dispatchEvent(new Event('input')); // sync Alpine x-model
+                        }
+                    }
+                })
+                .catch(err => console.log('RFID poll error:', err));
+        }, 2000);
+    </script>
+
 </x-admin-layout>

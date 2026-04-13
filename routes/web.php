@@ -12,7 +12,10 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $date = request('date', now()->toDateString());
+    $attendance = Attendance::with('student')
+        ->whereDate('date', $date)->get();
+    return view('dashboard', compact('attendance'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 //------------- Students page routes ------------------

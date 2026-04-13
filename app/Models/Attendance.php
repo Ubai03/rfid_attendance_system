@@ -10,11 +10,14 @@ class Attendance extends Model
     protected $primaryKey = 'attendance_id';
 
     protected $fillable = [
-        'student_name',
-        'matrix_no',
-        'course_name',
+        'student_id',
         'date',
         'time_in',
         'time_out'
     ];
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'student_id', 'student_id');
+    }
 }

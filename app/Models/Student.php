@@ -7,9 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Student extends Model
 {
     protected $table = 'students';
-
     protected $primaryKey = 'student_id';
-
     public $timestamps = false;
 
     protected $fillable = [
@@ -19,8 +17,8 @@ class Student extends Model
         'rfid_code'
     ];
 
-    public function attendance()
+    public function attendances()
     {
-        return $this->hasMany(Attendance::class, 'student_id');
+        return $this->hasMany(Attendance::class, 'student_id', 'student_id');
     }
 }

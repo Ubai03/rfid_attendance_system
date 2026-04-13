@@ -39,6 +39,7 @@
                             <th class="px-4 py-2 text-left">ID</th>
                             <th class="px-4 py-2 text-left">Name</th>
                             <th class="px-4 py-2 text-left">Matric No</th>
+                            <th class="px-4 py-2 text-left">Course</th>
                             <th class="px-4 py-2 text-left">Time-in</th>
                             <th class="px-4 py-2 text-left">Time-out</th>
                             <th class="px-4 py-2 text-left">Date</th>
@@ -48,10 +49,11 @@
                         @foreach($attendance as $record)
                         <tr>
                             <td class="px-4 py-2">{{ $record->attendance_id }}</td>
-                            <td class="px-4 py-2">{{ $record->student_name }}</td>
-                            <td class="px-4 py-2">{{ $record->matrix_no }}</td>
+                            <td class="px-4 py-2">{{ $record->student->name }}</td>
+                            <td class="px-4 py-2">{{ $record->student->matric_no }}</td>
+                            <td class="px-4 py-2">{{ $record->student->course }}</td>
                             <td class="px-4 py-2">{{ $record->time_in }}</td>
-                            <td class="px-4 py-2">{{ $record->time_out }}</td>
+                            <td class="px-4 py-2">{{ $record->time_out ?? '-' }}</td>
                             <td class="px-4 py-2">{{ $record->date }}</td>
                         </tr>
                         @endforeach
